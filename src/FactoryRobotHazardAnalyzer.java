@@ -1,16 +1,8 @@
 import java.util.Scanner;
 
-/*
- * UC1: Display Static Hazard Message
- *
- * Purpose:
- * - This is the entry point of the application.
- * - It displays a static message indicating the purpose of the system.
- *
- * Concepts Used:
- * - Class declaration
- * - main() method
- * - Print statement
+/**
+ * UC4:
+ * Validate inputs using conditional statements.
  */
 public class FactoryRobotHazardAnalyzer {
     public static void main(String[] args) {
@@ -22,10 +14,19 @@ public class FactoryRobotHazardAnalyzer {
         System.out.print("Enter Worker Density: ");
         int workerDensity = scanner.nextInt();
 
-        // Hazard calculation
-        double hazardScore = (workerDensity * 1.5) / armPrecision;
+        // Validation
+        if (armPrecision <= 0) {
+            System.out.println("Error: Arm precision must be greater than zero.");
+        }
+        else if (workerDensity < 0) {
+            System.out.println("Error: Worker density cannot be negative.");
+        }
+        else {
 
-        System.out.println("Hazard Risk Score: " + hazardScore);
+            double hazardScore = (workerDensity * 1.5) / armPrecision;
+
+            System.out.println("Hazard Risk Score: " + hazardScore);
+        }
 
         scanner.close();
     }
