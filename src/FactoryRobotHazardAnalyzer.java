@@ -1,50 +1,58 @@
 /**
- * UC7 — Machinery State Risk Mapping
+ * UC8: Fully Modular Hazard Analyzer
+ *
+ * Flow:
+ * 1. Collect inputs
+ * 2. Delegate logic to RobotHazardAuditor
+ * 3. Handle exceptions
+ * 4. Display result
+ *
+ * Demonstrates:
+ * ✔ Abstraction
+ * ✔ Modularity
  */
 import java.util.Scanner;
 public class FactoryRobotHazardAnalyzer {
-    public static double getMachineryRisk(String state)
-            throws RobotSafetyException {
-
-           switch (state) {
-               case "Worn": return 1.2;
-               case "Faulty": return 1.5;
-               case "Critical": return 2.0;
-               default:
-                throw new RobotSafetyException(
-                        "Unsupported machinery state!");
-        }
-    }
 
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
 
+        System.out.println("===== Factory Robot Hazard Analyzer =====");
+
         try {
 
+            // 1️⃣ Collect Inputs
             System.out.print("Enter Arm Precision: ");
             double armPrecision = scanner.nextDouble();
 
             System.out.print("Enter Worker Density: ");
             int workerDensity = scanner.nextInt();
+            scanner.nextLine(); // consume newline
 
-            scanner.nextLine();
+            System.out.print("Enter Machinery State (Worn/Faulty/Critical): ");
+            String machineryState = scanner.nextLine();
 
-            System.out.print("Enter Machinery State: ");
-            String state = scanner.nextLine();
+            // 2️⃣ Delegate business logic
+            RobotHazardAuditor auditor = new RobotHazardAuditor();
 
-            double riskFactor = getMachineryRisk(state);
+            double hazardScore = auditor.calculateHazardRisk(
+                    armPrecision,
+                    workerDensity,
+                    machineryState
+            );
 
-            double hazardScore =
-                    (workerDensity * riskFactor) / armPrecision;
+            // 3️⃣ Display Result
+            System.out.println("\n✅ Hazard Risk Score: " + hazardScore);
 
-            System.out.println("Hazard Risk Score: " + hazardScore);
-
-        } catch (RobotSafetyException e) {
-
-            System.out.println("Safety Error: " + e.getMessage());
         }
+        catch (RobotSafetyException e) {
 
-        scanner.close();
+            // Exception-based control flow
+            System.out.println("\n❌ Safety Error: " + e.getMessage());
+        }
+        finally {
+            scanner.close();
+        }
     }
 }

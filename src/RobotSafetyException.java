@@ -1,5 +1,11 @@
 /**
- * Custom Exception for robot safety.
+ * UC8:
+ * Custom Exception class used for handling
+ * robot safety violations.
+ *
+ * Demonstrates:
+ * ✔ Exception Inheritance
+ * ✔ Reusability
  */
 class RobotSafetyException extends Exception {
 
