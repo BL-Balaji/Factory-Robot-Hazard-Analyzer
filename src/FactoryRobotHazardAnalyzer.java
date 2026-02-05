@@ -1,11 +1,20 @@
-import java.util.Scanner;
-
 /**
- * UC4:
- * Validate inputs using conditional statements.
+ * UC5:
+ * Move calculation + validation into a method.
  */
+import java.util.Scanner;
 public class FactoryRobotHazardAnalyzer {
+    public static double calculateHazardRisk(double armPrecision, int workerDensity) {
+
+        if (armPrecision <= 0 || workerDensity < 0) {
+            return -1; // indicates invalid input
+        }
+
+        return (workerDensity * 1.5) / armPrecision;
+    }
+
     public static void main(String[] args) {
+
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Enter Arm Precision: ");
@@ -14,18 +23,12 @@ public class FactoryRobotHazardAnalyzer {
         System.out.print("Enter Worker Density: ");
         int workerDensity = scanner.nextInt();
 
-        // Validation
-        if (armPrecision <= 0) {
-            System.out.println("Error: Arm precision must be greater than zero.");
-        }
-        else if (workerDensity < 0) {
-            System.out.println("Error: Worker density cannot be negative.");
-        }
-        else {
+        double result = calculateHazardRisk(armPrecision, workerDensity);
 
-            double hazardScore = (workerDensity * 1.5) / armPrecision;
-
-            System.out.println("Hazard Risk Score: " + hazardScore);
+        if (result == -1) {
+            System.out.println("Invalid inputs!");
+        } else {
+            System.out.println("Hazard Risk Score: " + result);
         }
 
         scanner.close();
