@@ -1,21 +1,19 @@
 /**
- * UC6:
- * Use custom exception for validation.
+ * UC7 — Machinery State Risk Mapping
  */
 import java.util.Scanner;
 public class FactoryRobotHazardAnalyzer {
-    public static double calculateHazardRisk(double armPrecision, int workerDensity)
+    public static double getMachineryRisk(String state)
             throws RobotSafetyException {
 
-        if (armPrecision <= 0) {
-            throw new RobotSafetyException("Arm precision must be greater than zero.");
+           switch (state) {
+               case "Worn": return 1.2;
+               case "Faulty": return 1.5;
+               case "Critical": return 2.0;
+               default:
+                throw new RobotSafetyException(
+                        "Unsupported machinery state!");
         }
-
-        if (workerDensity < 0) {
-            throw new RobotSafetyException("Worker density cannot be negative.");
-        }
-
-        return (workerDensity * 1.5) / armPrecision;
     }
 
     public static void main(String[] args) {
@@ -30,7 +28,15 @@ public class FactoryRobotHazardAnalyzer {
             System.out.print("Enter Worker Density: ");
             int workerDensity = scanner.nextInt();
 
-            double hazardScore = calculateHazardRisk(armPrecision, workerDensity);
+            scanner.nextLine();
+
+            System.out.print("Enter Machinery State: ");
+            String state = scanner.nextLine();
+
+            double riskFactor = getMachineryRisk(state);
+
+            double hazardScore =
+                    (workerDensity * riskFactor) / armPrecision;
 
             System.out.println("Hazard Risk Score: " + hazardScore);
 
