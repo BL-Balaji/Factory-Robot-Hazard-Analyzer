@@ -1,13 +1,18 @@
 /**
- * UC5:
- * Move calculation + validation into a method.
+ * UC6:
+ * Use custom exception for validation.
  */
 import java.util.Scanner;
 public class FactoryRobotHazardAnalyzer {
-    public static double calculateHazardRisk(double armPrecision, int workerDensity) {
+    public static double calculateHazardRisk(double armPrecision, int workerDensity)
+            throws RobotSafetyException {
 
-        if (armPrecision <= 0 || workerDensity < 0) {
-            return -1; // indicates invalid input
+        if (armPrecision <= 0) {
+            throw new RobotSafetyException("Arm precision must be greater than zero.");
+        }
+
+        if (workerDensity < 0) {
+            throw new RobotSafetyException("Worker density cannot be negative.");
         }
 
         return (workerDensity * 1.5) / armPrecision;
@@ -17,18 +22,21 @@ public class FactoryRobotHazardAnalyzer {
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Enter Arm Precision: ");
-        double armPrecision = scanner.nextDouble();
+        try {
 
-        System.out.print("Enter Worker Density: ");
-        int workerDensity = scanner.nextInt();
+            System.out.print("Enter Arm Precision: ");
+            double armPrecision = scanner.nextDouble();
 
-        double result = calculateHazardRisk(armPrecision, workerDensity);
+            System.out.print("Enter Worker Density: ");
+            int workerDensity = scanner.nextInt();
 
-        if (result == -1) {
-            System.out.println("Invalid inputs!");
-        } else {
-            System.out.println("Hazard Risk Score: " + result);
+            double hazardScore = calculateHazardRisk(armPrecision, workerDensity);
+
+            System.out.println("Hazard Risk Score: " + hazardScore);
+
+        } catch (RobotSafetyException e) {
+
+            System.out.println("Safety Error: " + e.getMessage());
         }
 
         scanner.close();
